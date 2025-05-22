@@ -1,4 +1,4 @@
-name: IGPSport Data Sync To Xingzhe 
+name: Garmin To Xingzhe 
 
 on:
   workflow_dispatch:
