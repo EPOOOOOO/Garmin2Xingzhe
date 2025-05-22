@@ -85,6 +85,7 @@ def syncData(username, password, garmin_email = None, garmin_password = None):
     timezone = ZoneInfo('Asia/Shanghai')  # to Shanghai timezero in Gtihub Action env
 
     for activity in activities:
+        item_name = ""
         if type == 2: #garmin
             dt        = datetime.strptime(activity["startTimeLocal"], "%Y-%m-%d %H:%M:%S")
             dt2       = datetime(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, tzinfo=timezone)
@@ -96,6 +97,25 @@ def syncData(username, password, garmin_email = None, garmin_password = None):
             s_time    = dt2.timestamp()
             mk_time   = int(s_time) * 1000
 
+        # 上午/下午/晚上/凌晨
+        hour = dt2.hour
+        if 0 <= hour < 6:
+            time_period = "凌晨"
+        elif 6 <= hour < 12:
+            time_period = "上午"
+        elif 12 <= hour < 18:
+            time_period = "下午"
+        else:
+            time_period = "晚上"
+        
+        # 运动类型
+        #cycling 骑行
+        #running 跑步
+
+        item_name = dt2.strftime("%Y-%m-%d ") + time_period + " 骑行"
+        activity["itemName"] = item_name
+        print("运动记录名：" + activity["itemName"])
+        
         need_sync = True
 
         for item in data:
@@ -114,7 +134,7 @@ def syncData(username, password, garmin_email = None, garmin_password = None):
         upload_url = "https://www.imxingzhe.com/api/v1/fit/upload/"
         for sync_item in sync_data:
             if type == 2:  # garmin
-                rid     = sync_item['activityId']
+                rid = sync_item['activityId']
                 rid = str(rid)
                 print("sync rid:" + rid)
                 res = garth.download(
@@ -130,13 +150,14 @@ def syncData(username, password, garmin_email = None, garmin_password = None):
                         "file_source": (None, "undefined", None),
                         "fit_filename": (None, rid+"_ACTIVITY.fit", None),
                         "md5": (None, hashlib.md5(data).hexdigest(), None),
-                        "name": (None, 'Garmin-' + sync_item["startTimeLocal"], None),
+                        "name": (None, sync_item['itemName'], None),
                         "sport": (None, 3, None),  # 骑行
                         "fit_file": (rid+"_ACTIVITY.fit", data, 'application/octet-stream')
                     })
+                print("同步运动记录：" + sync_item['itemName'])
             else:
-                rid     = sync_item["RideId"]
-                rid     = str(rid)
+                rid = sync_item["RideId"]
+                rid = str(rid)
                 print("sync rid:" + rid)
 
                 fit_url = "https://%s/fit/activity?type=0&rideid=%s" % (igp_host, rid)
@@ -146,7 +167,7 @@ def syncData(username, password, garmin_email = None, garmin_password = None):
                     "file_source": (None, "undefined", None),
                     "fit_filename": (None, sync_item["StartTime"]+'.fit', None),
                     "md5": (None, hashlib.md5(res.content).hexdigest(), None),
-                    "name": (None, 'IGPSPORT-'+sync_item["StartTime"], None),
+                    "name": (None, 'IGPSPORT-'+sync_item["StartTime"]+' cycling', None),
                     "sport": (None, 3, None),  # 骑行
                     "fit_file": (sync_item["StartTime"]+'.fit', res.content, 'application/octet-stream')
                 })
