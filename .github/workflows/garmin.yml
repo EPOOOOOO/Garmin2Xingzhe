@@ -1,4 +1,4 @@
-name: Garmin CN to global
+name: Garmin CN data sync to global region
 
 on:
   workflow_dispatch:
@@ -24,7 +24,9 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: run script
       env:
-        GARMIN_RUN_EMAIL: ${{ secrets.GARMIN_RUN_EMAIL }}
-        GARMIN_RUN_PASSWORD: ${{ secrets.GARMIN_RUN_PASSWORD }}
+        GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
+        GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
+        GARMIN_GLOBAL_EMAIL: ${{ secrets.GARMIN_GLOBAL_EMAIL }}
+        GARMIN_GLOBAL_PASSWORD: ${{ secrets.GARMIN_GLOBAL_PASSWORD }}
       run: |
         python GarminSync.py
