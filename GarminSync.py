@@ -11,19 +11,23 @@ def encrpt(password, public_key):
     cipher = PKCS1_v1_5.new(rsa)
     return base64.b64encode(cipher.encrypt(password.encode())).decode()
 
-def syncData(garmin_email, garmin_password):
+def syncData(garmin_email, garmin_password, garmin_global_email, garmin_global_password):
     if garmin_password is None or garmin_password == '':
-        print("未设置账号密码，跳过脚本")
+        print("未设置中国区账号密码，跳过脚本")
         return
 
-    global_garth = Client()
+    if garmin_global_password is None or garmin_global_password == '':
+        print("未设置国际区账号密码，跳过脚本")
+        return
+
     garth = Client()
+    global_garth = Client()
 
     garth.configure(domain="garmin.cn")
 
     try:
         garth.login(garmin_email, garmin_password)
-        global_garth.login(garmin_email, garmin_password)
+        global_garth.login(garmin_global_email, garmin_global_password)
     except Exception as e:
         print("登录态失败")
         print(e)
@@ -31,7 +35,7 @@ def syncData(garmin_email, garmin_password):
 
     global_activities = global_garth.connectapi(
         f"/activitylist-service/activities/search/activities",
-        params={"activityType": "cycling", "limit": 10, "start": 0, 'excludeChildren': False}, #这里是跑步数据 骑行数据可修改成cycling
+        params={"activityType": "cycling", "limit": 10, "start": 0, 'excludeChildren': False}, #这里是跑步数据running 骑行数据可修改成cycling
     )
     activities = garth.connectapi(
         f"/activitylist-service/activities/search/activities",
@@ -72,4 +76,4 @@ def syncData(garmin_email, garmin_password):
 
     return True
 
-activity = syncData(os.getenv("GARMIN_RUN_EMAIL"), os.getenv("GARMIN_RUN_PASSWORD"))
+activity = syncData(os.getenv("GARMIN_EMAIL"), os.getenv("GARMIN_PASSWORD"), os.getenv("GARMIN_GLOBAL_EMAIL"), os.getenv("GARMIN_GLOBAL_PASSWORD"))
