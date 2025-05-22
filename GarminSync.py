@@ -31,11 +31,11 @@ def syncData(garmin_email, garmin_password):
 
     global_activities = global_garth.connectapi(
         f"/activitylist-service/activities/search/activities",
-        params={"activityType": "cycling", "limit": 50, "start": 0, 'excludeChildren': False}, #这里是跑步数据 骑行数据可修改成cycling
+        params={"activityType": "cycling", "limit": 10, "start": 0, 'excludeChildren': False}, #这里是跑步数据 骑行数据可修改成cycling
     )
     activities = garth.connectapi(
         f"/activitylist-service/activities/search/activities",
-        params={"activityType": "cycling", "limit": 50, "start": 0, 'excludeChildren': False},
+        params={"activityType": "cycling", "limit": 10, "start": 0, 'excludeChildren': False},
     )
 
     add_list = []
