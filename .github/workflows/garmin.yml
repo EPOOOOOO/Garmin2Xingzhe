@@ -1,8 +1,9 @@
 name: Garmin china region data sync to global region
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '0 14 * * *'
   watch:
     types: started
 
