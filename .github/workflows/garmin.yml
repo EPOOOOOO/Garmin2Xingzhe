@@ -1,4 +1,4 @@
-name: Garmin china region data sync to global region
+name: Garmin CN to global
 
 on:
   workflow_dispatch:
