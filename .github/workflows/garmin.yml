@@ -3,7 +3,7 @@ name: Garmin CN to global region
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 15 * * *'
+    - cron: '0 14 * * *'
   watch:
     types: started
 
