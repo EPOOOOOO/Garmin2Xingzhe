@@ -63,7 +63,7 @@ def syncData(garmin_email, garmin_password, garmin_global_email, garmin_global_p
                     zip_ref.extractall(rid)
         else:
             print("%s:已同步" % item['activityId'])
-
+ 
     print(add_list)
     print("本次同步数量：%s" % len(add_list))
     for u in add_list:
