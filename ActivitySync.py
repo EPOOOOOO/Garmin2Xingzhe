@@ -171,5 +171,5 @@ def syncData(username, password, garmin_email = None, garmin_password = None):
                     "sport": (None, 3, None),  # 骑行
                     "fit_file": (sync_item["StartTime"]+'.fit', res.content, 'application/octet-stream')
                 })
-
+ 
 activity = syncData(os.getenv("USERNAME"), os.getenv("PASSWORD"), os.getenv("GARMIN_EMAIL"), os.getenv("GARMIN_PASSWORD"))
