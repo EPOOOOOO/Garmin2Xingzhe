@@ -19,7 +19,7 @@ def syncData(username, password, garmin_email = None, garmin_password = None):
         'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
         "Accept-Encoding" : "gzip, deflate",
     }
-
+ 
     igp_host = "my.igpsport.com"
     if os.getenv("IGPSPORT_REGION") == "global":
         igp_host = "i.igpsport.com"
@@ -173,4 +173,5 @@ def syncData(username, password, garmin_email = None, garmin_password = None):
                 })
  
 activity = syncData(os.getenv("USERNAME"), os.getenv("PASSWORD"), os.getenv("GARMIN_EMAIL"), os.getenv("GARMIN_PASSWORD"))
+
 
