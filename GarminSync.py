@@ -15,7 +15,7 @@ def syncData(garmin_email, garmin_password, garmin_global_email, garmin_global_p
     if garmin_password is None or garmin_password == '':
         print("未设置中国区账号密码，跳过脚本")
         return
-
+ 
     if garmin_global_password is None or garmin_global_password == '':
         print("未设置国际区账号密码，跳过脚本")
         return
